@@ -141,7 +141,7 @@ const PayoutItem = styled.div<{ $variant: 'target' | 'warning' }>`
   padding: ${({ theme }) => theme.spacing.sm};
   background: rgba(24, 32, 44, 0.4);
   border-radius: ${({ theme }) => theme.borderRadius.md};
-  border: 1px solid ${({ $variant, theme }) => 
+  border: 1px solid ${({ $variant }) => 
     $variant === 'target' ? 'rgba(16, 185, 129, 0.15)' : 'rgba(248, 113, 113, 0.15)'};
 `;
 
