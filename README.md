@@ -1,73 +1,69 @@
-# React + TypeScript + Vite
+# RouteROI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**RouteROI** is a client-side React/TypeScript application designed as a pre-shift strategy calculator for independent contractors, courier networks, and gig economy operators.
 
-Currently, two official plugins are available:
+Unlike conventional mileage and expense trackers that compile costs *after* a shift, RouteROI shifts the focus to **pre-shift profitability strategy**. It empowers drivers to determine their true "Required Rate per Mile" and "Overhead Breakeven Rate" *before* accepting orders, enabling real-time filtering of unprofitable gig orders to protect their bottom line.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 🚀 Key Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* **Dynamic Target Multiplier**: Computes the required gross per-mile payout needed to hit a target hourly net wage, factoring in driving speed, vehicle expenses, and fixed overhead.
+* **Overhead Breakeven Rate**: Auto-calculates the exact per-mile cost required just to cover operational fixed costs (e.g., insurance, phone bills) and variable costs (e.g., fuel, maintenance, replacement depreciation) without earning a profit.
+* **Tax Buffer Provision (SE & Income Tax)**: Grosses up target hourly wages based on a customizable tax percentage (defaulting to 30%), shielding take-home profits from Self-Employment and Income tax liabilities while leaving business-deductible vehicle expenses untouched.
+* **Quick Trip Calculator**: A real-time, mobile-friendly trip payout estimator. Drivers can input the distance of a pending offer from delivery platforms or gig economy applications to instantly see side-by-side:
+  * **Target Minimum**: The minimum payout needed to hit their target wage.
+  * **Do Not Accept Below**: The strict breakeven limit below which they would operate at a loss.
+* **Responsive Styling**: A premium, high-contrast dark mode interface built with `styled-components` and tailored for on-the-road readability on mobile devices.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🛠️ Tech Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+* **Framework & Tooling**: [React 19](https://react.dev/), [TypeScript](https://www.typescriptlang.org/), and [Vite](https://vite.dev/) for high-speed builds and hot module replacement (HMR).
+* **Styling**: [styled-components](https://styled-components.com/) utilizing design tokens from a custom centralized theme.
+* **CI/CD Deployment**: Automated static-site compilation and deployment to GitHub Pages via custom GitHub Actions.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 📦 Getting Started
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Prerequisites
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Ensure you have [Node.js](https://nodejs.org/) (v20+ or v22+ recommended) and `npm` installed.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/ddgiovinazzo/routeroi.git
+   cd routeroi
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Run the development server locally:
+   ```bash
+   npm run dev
+   ```
+   Open `http://localhost:5173` in your browser.
+
+4. Build the application for production:
+   ```bash
+   npm run build
+   ```
+
+---
+
+## ⚠️ Important Disclaimers
+
+### Financial & Tax Disclaimer
+> [!IMPORTANT]
+> RouteROI is provided for informational and educational purposes only. The estimations generated by this tool do not constitute professional financial, investment, legal, or tax advice. Calculating actual net income and tax liabilities is complex and depends on many individual variables. Users should consult a certified CPA or tax professional to determine their specific tax structures, deductions, and obligations.
+
+### Safety Disclaimer
+> [!WARNING]
+> **DO NOT operate this application, input parameters, or interact with the Quick Trip Calculator while operating a moving vehicle.** Safe driving is your primary responsibility. Always pull over to a safe, stationary location or configure your parameters before starting your shift.
