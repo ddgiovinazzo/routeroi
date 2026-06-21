@@ -177,6 +177,7 @@ interface MultiplierDisplayProps {
   totalCpm: number;
   hourlyFixed: number;
   taxRate: number;
+  avgMph: number;
 }
 
 const formatCurrency = (val: number): string => {
@@ -205,11 +206,13 @@ export const MultiplierDisplay = ({
   totalCpm,
   hourlyFixed,
   taxRate,
+  avgMph,
 }: MultiplierDisplayProps) => {
   const [tripMiles, setTripMiles] = useState<string>('');
 
   const parsedMiles = parseFloat(tripMiles) || 0;
-  const breakevenRate = (hourlyFixed / 12) + totalCpm;
+  const safeAvgMph = avgMph <= 0 ? 1 : avgMph;
+  const breakevenRate = (hourlyFixed / safeAvgMph) + totalCpm;
   const targetPayout = parsedMiles * targetMultiplier;
   const breakevenPayout = parsedMiles * breakevenRate;
 
@@ -275,7 +278,7 @@ export const MultiplierDisplay = ({
         <GridItem>
           <GridLabel>Overhead Breakeven</GridLabel>
           <GridValue>
-            {formatCurrency((hourlyFixed / 12) + totalCpm)} / mi
+            {formatCurrency((hourlyFixed / safeAvgMph) + totalCpm)} / mi
           </GridValue>
         </GridItem>
       </Grid>

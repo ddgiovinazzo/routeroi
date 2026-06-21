@@ -132,6 +132,7 @@ function App() {
           totalCpm={totalCpm}
           hourlyFixed={hourlyFixed}
           taxRate={state.taxRate}
+          avgMph={state.avgMph}
         />
 
         <FormWrapper onSubmit={handleSubmit}>
