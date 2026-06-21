@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 
 const Card = styled.div`
@@ -99,6 +100,112 @@ const GridValue = styled.span`
   font-variant-numeric: tabular-nums;
 `;
 
+const TripCalculatorContainer = styled.div`
+  margin-top: ${({ theme }) => theme.spacing.md};
+  margin-bottom: ${({ theme }) => theme.spacing.lg};
+  padding: ${({ theme }) => theme.spacing.md};
+  background: rgba(24, 32, 44, 0.3);
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  text-align: left;
+`;
+
+const CalculatorTitle = styled.h3`
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  color: ${({ theme }) => theme.colors.textPrimary};
+  margin: 0 0 ${({ theme }) => theme.spacing.md} 0;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+`;
+
+const InputGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: ${({ theme }) => theme.spacing.md};
+`;
+
+const InputLabel = styled.label`
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  color: ${({ theme }) => theme.colors.textMuted};
+  margin-bottom: ${({ theme }) => theme.spacing.xs};
+  font-weight: 500;
+`;
+
+const InputWrapper = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+`;
+
+const StyledInput = styled.input`
+  width: 100%;
+  height: 44px;
+  background: ${({ theme }) => theme.colors.inputBackground};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  color: ${({ theme }) => theme.colors.inputText};
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  padding: 0 ${({ theme }) => theme.spacing.md};
+  padding-right: 3rem;
+  box-sizing: border-box;
+  transition: ${({ theme }) => theme.transitions.default};
+  font-variant-numeric: tabular-nums;
+
+  &:focus {
+    outline: none;
+    border-color: ${({ theme }) => theme.colors.borderFocus};
+    box-shadow: 0 0 0 1px ${({ theme }) => theme.colors.borderFocus};
+  }
+
+  @media (pointer: coarse) {
+    height: 48px;
+  }
+`;
+
+const Suffix = styled.span`
+  position: absolute;
+  right: ${({ theme }) => theme.spacing.md};
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  pointer-events: none;
+`;
+
+const PayoutGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: ${({ theme }) => theme.spacing.sm};
+`;
+
+const PayoutItem = styled.div<{ $variant: 'target' | 'warning' }>`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: ${({ theme }) => theme.spacing.sm};
+  background: rgba(24, 32, 44, 0.4);
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  border: 1px solid ${({ $variant, theme }) => 
+    $variant === 'target' ? 'rgba(16, 185, 129, 0.15)' : 'rgba(248, 113, 113, 0.15)'};
+`;
+
+const PayoutLabel = styled.span`
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  color: ${({ theme }) => theme.colors.textMuted};
+  margin-bottom: ${({ theme }) => theme.spacing.xs};
+  text-align: center;
+  font-weight: 500;
+`;
+
+const PayoutValue = styled.span<{ $variant: 'target' | 'warning' }>`
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-weight: 800;
+  color: ${({ $variant, theme }) => 
+    $variant === 'target' ? theme.colors.textAccent : theme.colors.error};
+  font-variant-numeric: tabular-nums;
+`;
+
 interface MultiplierDisplayProps {
   targetMultiplier: number;
   fuelCpm: number;
@@ -116,12 +223,29 @@ const formatCurrency = (val: number): string => {
   }).format(val);
 };
 
+const formatPayout = (val: number): string => {
+  if (isNaN(val) || !isFinite(val)) return '$0.00';
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(val);
+};
+
 export const MultiplierDisplay = ({
   targetMultiplier,
   fuelCpm,
   totalCpm,
   hourlyFixed,
 }: MultiplierDisplayProps) => {
+  const [tripMiles, setTripMiles] = useState<string>('');
+
+  const parsedMiles = parseFloat(tripMiles) || 0;
+  const breakevenRate = (hourlyFixed / 12) + totalCpm;
+  const targetPayout = parsedMiles * targetMultiplier;
+  const breakevenPayout = parsedMiles * breakevenRate;
+
   return (
     <Card>
       <Label>Required Rate</Label>
@@ -130,6 +254,40 @@ export const MultiplierDisplay = ({
         <Unit>/ mi</Unit>
       </MultiplierValue>
       <Subtitle>Minimum payout per mile needed to reach your goals</Subtitle>
+
+      <TripCalculatorContainer>
+        <CalculatorTitle>Quick Trip Calculator</CalculatorTitle>
+        <InputGroup>
+          <InputLabel htmlFor="tripMiles">Incoming Trip Miles</InputLabel>
+          <InputWrapper>
+            <StyledInput
+              id="tripMiles"
+              type="number"
+              inputMode="decimal"
+              step="0.1"
+              min="0"
+              placeholder="e.g. 10.5"
+              value={tripMiles}
+              onChange={(e) => setTripMiles(e.target.value)}
+            />
+            <Suffix>mi</Suffix>
+          </InputWrapper>
+        </InputGroup>
+        <PayoutGrid>
+          <PayoutItem $variant="target">
+            <PayoutLabel>Target Minimum</PayoutLabel>
+            <PayoutValue $variant="target">
+              {formatPayout(targetPayout)}
+            </PayoutValue>
+          </PayoutItem>
+          <PayoutItem $variant="warning">
+            <PayoutLabel>Do Not Accept Below</PayoutLabel>
+            <PayoutValue $variant="warning">
+              {formatPayout(breakevenPayout)}
+            </PayoutValue>
+          </PayoutItem>
+        </PayoutGrid>
+      </TripCalculatorContainer>
 
       <Grid>
         <GridItem>
