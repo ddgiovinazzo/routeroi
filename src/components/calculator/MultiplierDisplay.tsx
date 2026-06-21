@@ -1,5 +1,12 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import {
+  FormGroup,
+  Label as InputLabel,
+  InputWrapper,
+  Suffix,
+  StyledInput,
+} from '../../styles/SharedStyles';
 
 const Card = styled.div`
   background: ${({ theme }) => theme.colors.cardBackground};
@@ -120,58 +127,6 @@ const CalculatorTitle = styled.h3`
   text-align: center;
 `;
 
-const InputGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: ${({ theme }) => theme.spacing.md};
-`;
-
-const InputLabel = styled.label`
-  font-size: ${({ theme }) => theme.fontSizes.xs};
-  color: ${({ theme }) => theme.colors.textMuted};
-  margin-bottom: ${({ theme }) => theme.spacing.xs};
-  font-weight: 500;
-`;
-
-const InputWrapper = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 100%;
-`;
-
-const StyledInput = styled.input`
-  width: 100%;
-  height: 44px;
-  background: ${({ theme }) => theme.colors.inputBackground};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  color: ${({ theme }) => theme.colors.inputText};
-  font-size: ${({ theme }) => theme.fontSizes.md};
-  padding: 0 ${({ theme }) => theme.spacing.md};
-  padding-right: 3rem;
-  box-sizing: border-box;
-  transition: ${({ theme }) => theme.transitions.default};
-  font-variant-numeric: tabular-nums;
-
-  &:focus {
-    outline: none;
-    border-color: ${({ theme }) => theme.colors.borderFocus};
-    box-shadow: 0 0 0 1px ${({ theme }) => theme.colors.borderFocus};
-  }
-
-  @media (pointer: coarse) {
-    height: 48px;
-  }
-`;
-
-const Suffix = styled.span`
-  position: absolute;
-  right: ${({ theme }) => theme.spacing.md};
-  color: ${({ theme }) => theme.colors.textMuted};
-  font-size: ${({ theme }) => theme.fontSizes.sm};
-  pointer-events: none;
-`;
 
 const PayoutGrid = styled.div`
   display: grid;
@@ -257,7 +212,7 @@ export const MultiplierDisplay = ({
 
       <TripCalculatorContainer>
         <CalculatorTitle>Quick Trip Calculator</CalculatorTitle>
-        <InputGroup>
+        <FormGroup>
           <InputLabel htmlFor="tripMiles">Incoming Trip Miles</InputLabel>
           <InputWrapper>
             <StyledInput
@@ -269,10 +224,12 @@ export const MultiplierDisplay = ({
               placeholder="e.g. 10.5"
               value={tripMiles}
               onChange={(e) => setTripMiles(e.target.value)}
+              $hasSuffix
+              $suffixLength={2}
             />
             <Suffix>mi</Suffix>
           </InputWrapper>
-        </InputGroup>
+        </FormGroup>
         <PayoutGrid>
           <PayoutItem $variant="target">
             <PayoutLabel>Target Minimum</PayoutLabel>
