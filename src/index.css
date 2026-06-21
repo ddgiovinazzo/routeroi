@@ -1,0 +1,9 @@
+/* CSS Reset & Variable overrides for clean styled-components integration */
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+}
