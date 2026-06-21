@@ -112,7 +112,8 @@ function App() {
     state.targetWage,
     hourlyFixed,
     state.avgMph,
-    totalCpm
+    totalCpm,
+    state.taxRate
   );
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -130,6 +131,7 @@ function App() {
           fuelCpm={fuelCpm}
           totalCpm={totalCpm}
           hourlyFixed={hourlyFixed}
+          taxRate={state.taxRate}
         />
 
         <FormWrapper onSubmit={handleSubmit}>

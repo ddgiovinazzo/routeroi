@@ -10,6 +10,7 @@ export interface CalculatorState {
   hours: number;
   targetWage: number;
   avgMph: number;
+  taxRate: number;
 }
 
 export const DEFAULT_STATE: CalculatorState = {
@@ -22,6 +23,7 @@ export const DEFAULT_STATE: CalculatorState = {
   hours: 50,
   targetWage: 20,
   avgMph: 12,
+  taxRate: 30,
 };
 
 const LOCAL_STORAGE_KEY = 'routeroi_state_v1';

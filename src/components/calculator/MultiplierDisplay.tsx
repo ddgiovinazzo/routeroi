@@ -161,11 +161,22 @@ const PayoutValue = styled.span<{ $variant: 'target' | 'warning' }>`
   font-variant-numeric: tabular-nums;
 `;
 
+const TaxProvision = styled.span`
+  display: block;
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  color: ${({ theme }) => theme.colors.textMuted};
+  margin-top: -${({ theme }) => theme.spacing.xs};
+  margin-bottom: ${({ theme }) => theme.spacing.xs};
+  font-weight: 500;
+  font-style: italic;
+`;
+
 interface MultiplierDisplayProps {
   targetMultiplier: number;
   fuelCpm: number;
   totalCpm: number;
   hourlyFixed: number;
+  taxRate: number;
 }
 
 const formatCurrency = (val: number): string => {
@@ -193,6 +204,7 @@ export const MultiplierDisplay = ({
   fuelCpm,
   totalCpm,
   hourlyFixed,
+  taxRate,
 }: MultiplierDisplayProps) => {
   const [tripMiles, setTripMiles] = useState<string>('');
 
@@ -208,6 +220,7 @@ export const MultiplierDisplay = ({
         {formatCurrency(targetMultiplier)}
         <Unit>/ mi</Unit>
       </MultiplierValue>
+      <TaxProvision>(Includes {taxRate}% tax provision)</TaxProvision>
       <Subtitle>Minimum payout per mile needed to reach your goals</Subtitle>
 
       <TripCalculatorContainer>

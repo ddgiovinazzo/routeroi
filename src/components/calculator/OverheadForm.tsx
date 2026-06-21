@@ -1,3 +1,4 @@
+import styled from 'styled-components';
 import type { CalculatorState } from '../../hooks/useCalculatorState';
 import {
   FormCard,
@@ -9,6 +10,15 @@ import {
   Suffix,
   StyledInput,
 } from '../../styles/SharedStyles';
+
+const HelperText = styled.p`
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  color: ${({ theme }) => theme.colors.textMuted};
+  margin-top: ${({ theme }) => theme.spacing.xs};
+  margin-bottom: 0;
+  font-style: italic;
+  text-align: left;
+`;
 
 interface OverheadFormProps {
   state: CalculatorState;
@@ -105,6 +115,27 @@ export const OverheadForm = ({ state, updateField }: OverheadFormProps) => {
           />
           <Suffix>/ hr</Suffix>
         </InputWrapper>
+      </FormGroup>
+
+      <FormGroup>
+        <Label htmlFor="taxRate">Tax Buffer Provision (%)</Label>
+        <InputWrapper>
+          <StyledInput
+            id="taxRate"
+            type="number"
+            inputMode="numeric"
+            step="1"
+            min="0"
+            max="100"
+            value={state.taxRate !== undefined ? state.taxRate : ''}
+            onChange={(e) => handleChange('taxRate', e.target.value)}
+            $hasSuffix
+            $suffixLength={1}
+            required
+          />
+          <Suffix>%</Suffix>
+        </InputWrapper>
+        <HelperText>Combined % to hold back for SE and Income Tax</HelperText>
       </FormGroup>
     </FormCard>
   );

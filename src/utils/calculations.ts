@@ -32,16 +32,16 @@ export const calculateHourlyFixed = (
   return (insurance + phone) / hours;
 };
 
-/**
- * Calculate Target Multiplier (required rate per mile to hit target hourly net wage)
- * Formula: ((TargetWage + HourlyFixed) / AvgMph) + TotalCPM
- */
 export const calculateTargetMultiplier = (
   targetWage: number,
   hourlyFixed: number,
   avgMph: number,
-  totalCPM: number
+  totalCPM: number,
+  taxRate: number
 ): number => {
-  if (avgMph <= 0) return totalCPM; // If stationary, required rate is CPM, or wait, division by zero check
-  return ((targetWage + hourlyFixed) / avgMph) + totalCPM;
+  if (avgMph <= 0) return totalCPM;
+  const taxFactor = 1 - (taxRate / 100);
+  const safeTaxFactor = taxFactor <= 0 ? 0.01 : taxFactor; // Prevent division by zero or negative factors
+  const grossTargetWage = targetWage / safeTaxFactor;
+  return ((grossTargetWage + hourlyFixed) / avgMph) + totalCPM;
 };
