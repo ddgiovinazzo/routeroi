@@ -88,8 +88,4 @@ export const StyledInput = styled.input<InputProps>`
     border-color: ${({ theme }) => theme.colors.borderFocus};
     box-shadow: 0 0 0 1px ${({ theme }) => theme.colors.borderFocus};
   }
-
-  @media (pointer: coarse) {
-    height: 52px;
-  }
 `;

@@ -34,12 +34,6 @@ const Card = styled.div`
       rgba(16, 185, 129, 0.1) 100%
     );
   }
-
-  &:hover {
-    border-color: rgba(16, 185, 129, 0.3);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3),
-      ${({ theme }) => theme.shadows.glow};
-  }
 `;
 
 const Label = styled.h2`
@@ -77,7 +71,7 @@ const Subtitle = styled.div`
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   gap: ${({ theme }) => theme.spacing.md};
   border-top: 1px solid ${({ theme }) => theme.colors.border};
   padding-top: ${({ theme }) => theme.spacing.md};
@@ -130,7 +124,7 @@ const CalculatorTitle = styled.h3`
 
 const PayoutGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   gap: ${({ theme }) => theme.spacing.sm};
 `;
 
@@ -141,7 +135,7 @@ const PayoutItem = styled.div<{ $variant: 'target' | 'warning' }>`
   padding: ${({ theme }) => theme.spacing.sm};
   background: rgba(24, 32, 44, 0.4);
   border-radius: ${({ theme }) => theme.borderRadius.md};
-  border: 1px solid ${({ $variant }) => 
+  border: 1px solid ${({ $variant }) =>
     $variant === 'target' ? 'rgba(16, 185, 129, 0.15)' : 'rgba(248, 113, 113, 0.15)'};
 `;
 
@@ -156,7 +150,7 @@ const PayoutLabel = styled.span`
 const PayoutValue = styled.span<{ $variant: 'target' | 'warning' }>`
   font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: 800;
-  color: ${({ $variant, theme }) => 
+  color: ${({ $variant, theme }) =>
     $variant === 'target' ? theme.colors.textAccent : theme.colors.error};
   font-variant-numeric: tabular-nums;
 `;

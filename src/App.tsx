@@ -30,21 +30,15 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     margin: 0;
     min-height: 100vh;
-    display: flex;
-    justify-content: center;
   }
 
   #root {
     width: 100%;
-    max-width: 100%;
-    display: flex;
-    justify-content: center;
   }
 `;
 
 const AppContainer = styled.main`
   width: 100%;
-  max-width: ${({ theme }) => theme.breakpoints.mobile};
   padding: ${({ theme }) => theme.spacing.md};
   display: flex;
   flex-direction: column;
@@ -74,25 +68,16 @@ const ResetButton = styled.button`
   color: ${({ theme }) => theme.colors.textMuted};
   font-size: ${({ theme }) => theme.fontSizes.sm};
   font-weight: 600;
-  cursor: pointer;
   transition: ${({ theme }) => theme.transitions.default};
   display: flex;
   align-items: center;
   justify-content: center;
   gap: ${({ theme }) => theme.spacing.sm};
 
-  &:hover {
+  &:active {
     color: ${({ theme }) => theme.colors.error};
     border-color: ${({ theme }) => theme.colors.error};
-    background: rgba(248, 113, 113, 0.05);
-  }
-
-  &:active {
     background: rgba(248, 113, 113, 0.1);
-  }
-
-  @media (pointer: coarse) {
-    height: 52px;
   }
 `;
 
@@ -125,7 +110,7 @@ function App() {
       <GlobalStyle />
       <AppContainer>
         <Header />
-        
+
         <MultiplierDisplay
           targetMultiplier={targetMultiplier}
           fuelCpm={fuelCpm}
