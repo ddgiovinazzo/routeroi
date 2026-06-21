@@ -20,7 +20,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    background-color: ${theme.colors.background};
+    background-color: #06080a; /* Deep dark page background to offset the centered mobile layout on desktop */
     color: ${theme.colors.textPrimary};
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-size: 16px;
@@ -30,19 +30,29 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     margin: 0;
     min-height: 100vh;
+    display: flex;
+    justify-content: center;
   }
 
   #root {
     width: 100%;
+    display: flex;
+    justify-content: center;
   }
 `;
 
 const AppContainer = styled.main`
   width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
   padding: ${({ theme }) => theme.spacing.md};
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background-color: ${({ theme }) => theme.colors.background};
+  border-left: 1px solid ${({ theme }) => theme.colors.border};
+  border-right: 1px solid ${({ theme }) => theme.colors.border};
+  box-shadow: 0 0 24px rgba(0, 0, 0, 0.6);
 `;
 
 const FormWrapper = styled.form`
@@ -68,6 +78,7 @@ const ResetButton = styled.button`
   color: ${({ theme }) => theme.colors.textMuted};
   font-size: ${({ theme }) => theme.fontSizes.sm};
   font-weight: 600;
+  cursor: pointer;
   transition: ${({ theme }) => theme.transitions.default};
   display: flex;
   align-items: center;
