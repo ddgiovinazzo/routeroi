@@ -23,7 +23,7 @@ export const MetricsForm = ({ state, updateField }: MetricsFormProps) => {
 
   return (
     <FormCard>
-      <FormTitle>Gig & Vehicle Metrics</FormTitle>
+      <FormTitle>Metrics</FormTitle>
 
       <FormGroup>
         <Label htmlFor="gasPrice">Gas Price</Label>
