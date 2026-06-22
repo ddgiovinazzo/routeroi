@@ -3,14 +3,8 @@ import theme from './styles/theme';
 import Header from './components/layout/Header';
 import MultiplierDisplay from './components/calculator/MultiplierDisplay';
 import MetricsForm from './components/calculator/MetricsForm';
-import OverheadForm from './components/calculator/OverheadForm';
 import { useCalculatorState } from './hooks/useCalculatorState';
-import {
-  calculateFuelCPM,
-  calculateTotalCPM,
-  calculateHourlyFixed,
-  calculateTargetMultiplier,
-} from './utils/calculations';
+import { calculateTripMetrics } from './utils/calculations';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -101,16 +95,7 @@ function App() {
   const { state, updateField, resetState } = useCalculatorState();
 
   // Run the math engine
-  const fuelCpm = calculateFuelCPM(state.gasPrice, state.mpg);
-  const totalCpm = calculateTotalCPM(fuelCpm, state.maintCpm, state.replCpm);
-  const hourlyFixed = calculateHourlyFixed(state.insurance, state.phone, state.hours);
-  const targetMultiplier = calculateTargetMultiplier(
-    state.targetWage,
-    hourlyFixed,
-    state.avgMph,
-    totalCpm,
-    state.taxRate
-  );
+  const metrics = calculateTripMetrics(state);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -123,17 +108,14 @@ function App() {
         <Header />
 
         <MultiplierDisplay
-          targetMultiplier={targetMultiplier}
-          fuelCpm={fuelCpm}
-          totalCpm={totalCpm}
-          hourlyFixed={hourlyFixed}
-          taxRate={state.taxRate}
-          avgMph={state.avgMph}
+          gasCostPerMile={metrics.gasCostPerMile}
+          totalVehicleCpm={metrics.totalVehicleCpm}
+          targetProfitCpm={metrics.targetProfitCpm}
+          minimumPayoutPerMile={metrics.minimumPayoutPerMile}
         />
 
         <FormWrapper onSubmit={handleSubmit}>
           <MetricsForm state={state} updateField={updateField} />
-          <OverheadForm state={state} updateField={updateField} />
         </FormWrapper>
 
         <Footer>

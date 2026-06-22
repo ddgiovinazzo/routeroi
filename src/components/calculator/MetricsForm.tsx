@@ -23,7 +23,7 @@ export const MetricsForm = ({ state, updateField }: MetricsFormProps) => {
 
   return (
     <FormCard>
-      <FormTitle>Vehicle & Driving Metrics</FormTitle>
+      <FormTitle>Gig & Vehicle Metrics</FormTitle>
 
       <FormGroup>
         <Label htmlFor="gasPrice">Gas Price</Label>
@@ -66,17 +66,17 @@ export const MetricsForm = ({ state, updateField }: MetricsFormProps) => {
       </FormGroup>
 
       <FormGroup>
-        <Label htmlFor="maintCpm">Maintenance CPM</Label>
+        <Label htmlFor="maintenanceCpm">Maintenance Cost Per Mile</Label>
         <InputWrapper>
           <Prefix>$</Prefix>
           <StyledInput
-            id="maintCpm"
+            id="maintenanceCpm"
             type="number"
             inputMode="decimal"
             step="0.01"
             min="0"
-            value={state.maintCpm || ''}
-            onChange={(e) => handleChange('maintCpm', e.target.value)}
+            value={state.maintenanceCpm || ''}
+            onChange={(e) => handleChange('maintenanceCpm', e.target.value)}
             $hasPrefix
             $hasSuffix
             $suffixLength={3}
@@ -87,37 +87,37 @@ export const MetricsForm = ({ state, updateField }: MetricsFormProps) => {
       </FormGroup>
 
       <FormGroup>
-        <Label htmlFor="replCpm">Vehicle Replacement CPM</Label>
+        <Label htmlFor="targetHourlyWage">Target Hourly Wage</Label>
         <InputWrapper>
           <Prefix>$</Prefix>
           <StyledInput
-            id="replCpm"
+            id="targetHourlyWage"
             type="number"
-            inputMode="decimal"
-            step="0.01"
+            inputMode="numeric"
+            step="1"
             min="0"
-            value={state.replCpm || ''}
-            onChange={(e) => handleChange('replCpm', e.target.value)}
+            value={state.targetHourlyWage || ''}
+            onChange={(e) => handleChange('targetHourlyWage', e.target.value)}
             $hasPrefix
             $hasSuffix
             $suffixLength={3}
             required
           />
-          <Suffix>/ mi</Suffix>
+          <Suffix>/ hr</Suffix>
         </InputWrapper>
       </FormGroup>
 
       <FormGroup>
-        <Label htmlFor="avgMph">Average Active Speed</Label>
+        <Label htmlFor="averageMph">Average Active Speed</Label>
         <InputWrapper>
           <StyledInput
-            id="avgMph"
+            id="averageMph"
             type="number"
             inputMode="numeric"
             step="1"
             min="1"
-            value={state.avgMph || ''}
-            onChange={(e) => handleChange('avgMph', e.target.value)}
+            value={state.averageMph || ''}
+            onChange={(e) => handleChange('averageMph', e.target.value)}
             $hasSuffix
             $suffixLength={3}
             required

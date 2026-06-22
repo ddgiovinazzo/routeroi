@@ -155,23 +155,11 @@ const PayoutValue = styled.span<{ $variant: 'target' | 'warning' }>`
   font-variant-numeric: tabular-nums;
 `;
 
-const TaxProvision = styled.span`
-  display: block;
-  font-size: ${({ theme }) => theme.fontSizes.xs};
-  color: ${({ theme }) => theme.colors.textMuted};
-  margin-top: -${({ theme }) => theme.spacing.xs};
-  margin-bottom: ${({ theme }) => theme.spacing.xs};
-  font-weight: 500;
-  font-style: italic;
-`;
-
 interface MultiplierDisplayProps {
-  targetMultiplier: number;
-  fuelCpm: number;
-  totalCpm: number;
-  hourlyFixed: number;
-  taxRate: number;
-  avgMph: number;
+  gasCostPerMile: number;
+  totalVehicleCpm: number;
+  targetProfitCpm: number;
+  minimumPayoutPerMile: number;
 }
 
 const formatCurrency = (val: number): string => {
@@ -195,30 +183,25 @@ const formatPayout = (val: number): string => {
 };
 
 export const MultiplierDisplay = ({
-  targetMultiplier,
-  fuelCpm,
-  totalCpm,
-  hourlyFixed,
-  taxRate,
-  avgMph,
+  gasCostPerMile,
+  totalVehicleCpm,
+  targetProfitCpm,
+  minimumPayoutPerMile,
 }: MultiplierDisplayProps) => {
   const [tripMiles, setTripMiles] = useState<string>('');
 
   const parsedMiles = parseFloat(tripMiles) || 0;
-  const safeAvgMph = avgMph <= 0 ? 1 : avgMph;
-  const breakevenRate = (hourlyFixed / safeAvgMph) + totalCpm;
-  const targetPayout = parsedMiles * targetMultiplier;
-  const breakevenPayout = parsedMiles * breakevenRate;
+  const targetPayout = parsedMiles * minimumPayoutPerMile;
+  const breakevenPayout = parsedMiles * totalVehicleCpm;
 
   return (
     <Card>
       <Label>Required Rate</Label>
       <MultiplierValue>
-        {formatCurrency(targetMultiplier)}
+        {formatCurrency(minimumPayoutPerMile)}
         <Unit>/ mi</Unit>
       </MultiplierValue>
-      <TaxProvision>(Includes {taxRate}% tax provision)</TaxProvision>
-      <Subtitle>Minimum payout per mile needed to reach your goals</Subtitle>
+      <Subtitle>Minimum payout per mile needed to reach your target</Subtitle>
 
       <TripCalculatorContainer>
         <CalculatorTitle>Quick Trip Calculator</CalculatorTitle>
@@ -259,21 +242,15 @@ export const MultiplierDisplay = ({
       <Grid>
         <GridItem>
           <GridLabel>Fuel Cost</GridLabel>
-          <GridValue>{formatCurrency(fuelCpm)} / mi</GridValue>
+          <GridValue>{formatCurrency(gasCostPerMile)} / mi</GridValue>
         </GridItem>
         <GridItem>
-          <GridLabel>Total Variable Cost (CPM)</GridLabel>
-          <GridValue>{formatCurrency(totalCpm)} / mi</GridValue>
+          <GridLabel>Vehicle CPM</GridLabel>
+          <GridValue>{formatCurrency(totalVehicleCpm)} / mi</GridValue>
         </GridItem>
         <GridItem>
-          <GridLabel>Hourly Fixed Cost</GridLabel>
-          <GridValue>{formatCurrency(hourlyFixed)} / hr</GridValue>
-        </GridItem>
-        <GridItem>
-          <GridLabel>Overhead Breakeven</GridLabel>
-          <GridValue>
-            {formatCurrency((hourlyFixed / safeAvgMph) + totalCpm)} / mi
-          </GridValue>
+          <GridLabel>Target Profit</GridLabel>
+          <GridValue>{formatCurrency(targetProfitCpm)} / mi</GridValue>
         </GridItem>
       </Grid>
     </Card>

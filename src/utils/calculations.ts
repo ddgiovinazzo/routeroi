@@ -1,47 +1,21 @@
-/**
- * Calculate Fuel Cost Per Mile (CPM)
- * Formula: Gas Price / MPG
- */
-export const calculateFuelCPM = (gasPrice: number, mpg: number): number => {
-  if (mpg <= 0) return 0;
-  return gasPrice / mpg;
-};
+import type { CalculatorState } from '../hooks/useCalculatorState';
 
-/**
- * Calculate Total Cost Per Mile (CPM)
- * Formula: Fuel CPM + Maintenance CPM + Replacement CPM
- */
-export const calculateTotalCPM = (
-  fuelCPM: number,
-  maintCPM: number,
-  replCPM: number
-): number => {
-  return fuelCPM + maintCPM + replCPM;
-};
+export const calculateTripMetrics = (state: CalculatorState) => {
+  // 1. Calculate physical vehicle cost to move one mile
+  const gasCostPerMile = state.mpg > 0 ? state.gasPrice / state.mpg : 0;
+  const totalVehicleCpm = gasCostPerMile + state.maintenanceCpm;
 
-/**
- * Calculate Hourly Fixed Expenses
- * Formula: (Insurance + Phone) / Hours
- */
-export const calculateHourlyFixed = (
-  insurance: number,
-  phone: number,
-  hours: number
-): number => {
-  if (hours <= 0) return 0;
-  return (insurance + phone) / hours;
-};
+  // 2. Convert Target Hourly Wage into a Target Profit Per Mile
+  // If you want $20/hr and drive 20mph, you need $1 of profit per mile.
+  const targetProfitCpm = state.averageMph > 0 ? state.targetHourlyWage / state.averageMph : 0;
 
-export const calculateTargetMultiplier = (
-  targetWage: number,
-  hourlyFixed: number,
-  avgMph: number,
-  totalCPM: number,
-  taxRate: number
-): number => {
-  if (avgMph <= 0) return totalCPM;
-  const taxFactor = 1 - (taxRate / 100);
-  const safeTaxFactor = taxFactor <= 0 ? 0.01 : taxFactor; // Prevent division by zero or negative factors
-  const grossTargetWage = targetWage / safeTaxFactor;
-  return ((grossTargetWage + hourlyFixed) / avgMph) + totalCPM;
+  // 3. The absolute minimum the app should tell the user to accept
+  const minimumPayoutPerMile = totalVehicleCpm + targetProfitCpm;
+
+  return {
+    gasCostPerMile,
+    totalVehicleCpm,
+    targetProfitCpm,
+    minimumPayoutPerMile
+  };
 };
