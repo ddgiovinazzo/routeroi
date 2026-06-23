@@ -1,26 +1,30 @@
 # RouteROI
 
-**RouteROI** is a client-side React/TypeScript application designed as a pre-shift tactical strategy tool for independent contractors, courier networks, and gig economy operators. 
+**RouteROI** is a client-side React/TypeScript application designed as a pre-shift tactical strategy tool and real-time pre-drive **Snap Decision Evaluator** for independent contractors, courier networks, and gig economy operators. 
 
-Instead of tracking expenses after the fact, RouteROI is a front-line utility that computes the real-time physical vehicle Cost Per Mile (CPM) and factors in the driver's Target Hourly Wage to determine the absolute minimum acceptable payout per mile. All long-term business accounting (taxes, CPA fees, subscriptions) is shifted to external sheets, keeping the app focused strictly on front-line order filtering.
+Instead of tracking expenses after the fact, RouteROI computes the real-time physical vehicle Cost Per Mile (CPM) and factors in the driver's Target Hourly Wage to determine the absolute minimum acceptable payout per mile. Designed for extreme speed, the app flattens time into distance using an average speed (MPH) profile, allowing a single-input layout.
 
 ---
 
 ## 🚀 Key Features
 
-* **Minimum Payout Per Mile**: Computes the required rate per mile needed to cover vehicle operational costs and earn your target net hourly wage based on average active traffic speed.
-* **Physical Vehicle CPM (Breakeven)**: Calculates the physical cost of driving one mile (fuel cost based on MPG and gas price + maintenance CPM).
-* **Quick Trip Calculator**: A real-time, touch-friendly trip payout estimator. Drivers can input the distance of a pending offer from delivery platforms to instantly see:
-  * **Target Minimum**: The minimum payout needed to cover vehicle wear and hit their target wage.
-  * **Do Not Accept Below**: The strict physical vehicle cost breakeven limit, below which they are losing money on the drive.
-* **Mobile-Only Optimized UI**: A high-contrast, dark mode interface tailored for readability while mounted in a vehicle. Designed strictly for touch interactions with large active tap targets (>= 48px), iOS input zoom prevention, and a centered mobile app frame layout on desktop.
+* **Magic Multiplier Single-Input Evaluation**: Simply enter the **Route Miles** of a pending offer to instantly see the calculated **Required Target** payout. The app flattens target wages into a per-mile profit threshold:
+  $$\text{Magic Multiplier} = \left(\frac{\text{Gas Price}}{\text{MPG}} + \text{Maintenance CPM}\right) + \frac{\text{Target Hourly Wage}}{\text{Average MPH}}$$
+* **Optional Offer Verification**: Drivers can optionally input an actual payout offer value to run a detailed evaluation against the private external `@ddgiovinazzo/dispatch-math` package, returning:
+  * **Net Profit** (incorporating exact vehicle CPM expenses and deadhead logic).
+  * **Est. Hourly Rate** (based on computed travel duration).
+* **Go/No-Go Verdict**: Instantly flags whether an offer is a "Go" (GREEN) or "No-Go" (RED) based on whether the estimated hourly rate meets or exceeds the target hourly wage.
+* **Deadhead Return Toggle**: A giant toggle to mark whether they have to return empty, which instantly doubles the route mileage for cost calculations.
+* **Smart State Hook**: Separates the **Vehicle Profile** (Gas Price, MPG, Maintenance CPM, Target Hourly Wage, and Average MPH) which persists in LocalStorage, from the transient **Active Offer** parameters (Miles, Actual Offer, Deadhead Toggle) which clear on reset.
+* **Mobile-First Optimized UI**: High-contrast, dark mode interface tailored for quick readability while parked in a vehicle. Designed strictly for touch interactions with large active tap targets (>= 48px), iOS input zoom prevention, and a centered mobile app frame layout.
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠️ Tech Stack & Dependencies
 
-* **Framework & Tooling**: [React 19](https://react.dev/), [TypeScript](https://www.typescriptlang.org/), and [Vite](https://vite.dev/) for high-speed compilation and builds.
-* **Styling**: [styled-components](https://styled-components.com/) utilizing design tokens from a custom centralized theme, featuring mobile-native active touch feedback.
+* **Framework & Tooling**: [React 19](https://react.dev/), [TypeScript](https://www.typescriptlang.org/), and [Vite](https://vite.dev/).
+* **Styling**: [styled-components](https://styled-components.com/) utilizing design tokens from a custom centralized theme.
+* **Math Engine**: [@ddgiovinazzo/dispatch-math](https://github.com/ddgiovinazzo/dispatch-math) for trip profitability calculation.
 * **CI/CD Deployment**: Automated static-site compilation and deployment to GitHub Pages via custom GitHub Actions.
 
 ---
@@ -65,4 +69,4 @@ Ensure you have [Node.js](https://nodejs.org/) (v20+ or v22+ recommended) and `n
 
 ### Safety Disclaimer
 > [!WARNING]
-> **DO NOT operate this application, input parameters, or interact with the Quick Trip Calculator while operating a moving vehicle.** Safe driving is your primary responsibility. Always pull over to a safe, stationary location or configure your parameters before starting your shift.
+> **DO NOT operate this application, input parameters, or interact with the Snap Decision Evaluator while operating a moving vehicle.** Safe driving is your primary responsibility. Always pull over to a safe, stationary location or configure your parameters before starting your shift.
