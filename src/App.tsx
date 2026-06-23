@@ -1,10 +1,9 @@
 import styled, { ThemeProvider, createGlobalStyle } from 'styled-components';
 import theme from './styles/theme';
 import Header from './components/layout/Header';
-import MultiplierDisplay from './components/calculator/MultiplierDisplay';
+import DispatchEvaluator from './components/calculator/DispatchEvaluator';
 import MetricsForm from './components/calculator/MetricsForm';
 import { useCalculatorState } from './hooks/useCalculatorState';
-import { calculateTripMetrics } from './utils/calculations';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -55,6 +54,41 @@ const FormWrapper = styled.form`
   width: 100%;
 `;
 
+const CollapsibleDetails = styled.details`
+  margin-top: ${({ theme }) => theme.spacing.md};
+  margin-bottom: ${({ theme }) => theme.spacing.sm};
+  width: 100%;
+  
+  & > summary {
+    list-style: none;
+    outline: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: ${({ theme }) => theme.fontSizes.sm};
+    color: ${({ theme }) => theme.colors.textMuted};
+    padding: ${({ theme }) => theme.spacing.sm} 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: ${({ theme }) => theme.spacing.xs};
+    user-select: none;
+    transition: color 0.2s;
+    
+    &:hover {
+      color: ${({ theme }) => theme.colors.textPrimary};
+    }
+    
+    &::-webkit-details-marker {
+      display: none;
+    }
+    
+    &::before {
+      content: '⚙️';
+      font-size: 14px;
+    }
+  }
+`;
+
 const Footer = styled.footer`
   margin-top: auto;
   padding: ${({ theme }) => theme.spacing.xl} 0;
@@ -94,9 +128,6 @@ const Copyright = styled.div`
 function App() {
   const { state, updateField, resetState } = useCalculatorState();
 
-  // Run the math engine
-  const metrics = calculateTripMetrics(state);
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
   };
@@ -107,20 +138,18 @@ function App() {
       <AppContainer>
         <Header />
 
-        <MultiplierDisplay
-          gasCostPerMile={metrics.gasCostPerMile}
-          totalVehicleCpm={metrics.totalVehicleCpm}
-          targetProfitCpm={metrics.targetProfitCpm}
-          minimumPayoutPerMile={metrics.minimumPayoutPerMile}
-        />
-
         <FormWrapper onSubmit={handleSubmit}>
-          <MetricsForm state={state} updateField={updateField} />
+          <DispatchEvaluator state={state} updateField={updateField} />
+
+          <CollapsibleDetails>
+            <summary>Edit Vehicle Profile & Target Wage</summary>
+            <MetricsForm state={state} updateField={updateField} />
+          </CollapsibleDetails>
         </FormWrapper>
 
         <Footer>
           <ResetButton type="button" onClick={resetState}>
-            Reset to Defaults
+            Reset Offer Fields
           </ResetButton>
           <Copyright>
             &copy; {new Date().getFullYear()} RouteROI. All rights reserved.

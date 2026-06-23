@@ -12,7 +12,7 @@ import {
 
 interface MetricsFormProps {
   state: CalculatorState;
-  updateField: (field: keyof CalculatorState, value: number) => void;
+  updateField: (field: keyof CalculatorState, value: number | boolean) => void;
 }
 
 export const MetricsForm = ({ state, updateField }: MetricsFormProps) => {
@@ -23,7 +23,7 @@ export const MetricsForm = ({ state, updateField }: MetricsFormProps) => {
 
   return (
     <FormCard>
-      <FormTitle>Metrics</FormTitle>
+      <FormTitle>Vehicle Profile & Targets</FormTitle>
 
       <FormGroup>
         <Label htmlFor="gasPrice">Gas Price</Label>
@@ -35,6 +35,7 @@ export const MetricsForm = ({ state, updateField }: MetricsFormProps) => {
             inputMode="decimal"
             step="0.01"
             min="0"
+            style={{ fontSize: '16px' }} // Expressly ensure 16px minimum to prevent iOS zoom
             value={state.gasPrice || ''}
             onChange={(e) => handleChange('gasPrice', e.target.value)}
             $hasPrefix
@@ -55,6 +56,7 @@ export const MetricsForm = ({ state, updateField }: MetricsFormProps) => {
             inputMode="numeric"
             step="1"
             min="1"
+            style={{ fontSize: '16px' }} // Expressly ensure 16px minimum to prevent iOS zoom
             value={state.mpg || ''}
             onChange={(e) => handleChange('mpg', e.target.value)}
             $hasSuffix
@@ -75,6 +77,7 @@ export const MetricsForm = ({ state, updateField }: MetricsFormProps) => {
             inputMode="decimal"
             step="0.01"
             min="0"
+            style={{ fontSize: '16px' }} // Expressly ensure 16px minimum to prevent iOS zoom
             value={state.maintenanceCpm || ''}
             onChange={(e) => handleChange('maintenanceCpm', e.target.value)}
             $hasPrefix
@@ -96,6 +99,7 @@ export const MetricsForm = ({ state, updateField }: MetricsFormProps) => {
             inputMode="numeric"
             step="1"
             min="0"
+            style={{ fontSize: '16px' }} // Expressly ensure 16px minimum to prevent iOS zoom
             value={state.targetHourlyWage || ''}
             onChange={(e) => handleChange('targetHourlyWage', e.target.value)}
             $hasPrefix
@@ -104,25 +108,6 @@ export const MetricsForm = ({ state, updateField }: MetricsFormProps) => {
             required
           />
           <Suffix>/ hr</Suffix>
-        </InputWrapper>
-      </FormGroup>
-
-      <FormGroup>
-        <Label htmlFor="averageMph">Average Active Speed</Label>
-        <InputWrapper>
-          <StyledInput
-            id="averageMph"
-            type="number"
-            inputMode="numeric"
-            step="1"
-            min="1"
-            value={state.averageMph || ''}
-            onChange={(e) => handleChange('averageMph', e.target.value)}
-            $hasSuffix
-            $suffixLength={3}
-            required
-          />
-          <Suffix>MPH</Suffix>
         </InputWrapper>
       </FormGroup>
     </FormCard>
