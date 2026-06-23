@@ -5,12 +5,12 @@ export interface VehicleProfile {
   mpg: number;
   maintenanceCpm: number; // e.g., 0.10 for wear/tear
   targetHourlyWage: number;
+  averageMph: number;
 }
 
 export interface ActiveOffer {
-  expectedRevenue: number;
   screenMiles: number;
-  estimatedMinutes: number;
+  actualOffer: number;
   isDeadhead: boolean;
 }
 
@@ -21,12 +21,12 @@ export const DEFAULT_VEHICLE_PROFILE: VehicleProfile = {
   mpg: 20,
   maintenanceCpm: 0.15, // standard maintenance & wear cpm default
   targetHourlyWage: 20,
+  averageMph: 15,
 };
 
 export const DEFAULT_ACTIVE_OFFER: ActiveOffer = {
-  expectedRevenue: 0,
   screenMiles: 0,
-  estimatedMinutes: 0,
+  actualOffer: 0,
   isDeadhead: false,
 };
 
@@ -49,6 +49,7 @@ export const useCalculatorState = () => {
           mpg: typeof parsed.mpg === 'number' ? parsed.mpg : DEFAULT_VEHICLE_PROFILE.mpg,
           maintenanceCpm: typeof parsed.maintenanceCpm === 'number' ? parsed.maintenanceCpm : DEFAULT_VEHICLE_PROFILE.maintenanceCpm,
           targetHourlyWage: typeof parsed.targetHourlyWage === 'number' ? parsed.targetHourlyWage : DEFAULT_VEHICLE_PROFILE.targetHourlyWage,
+          averageMph: typeof parsed.averageMph === 'number' ? parsed.averageMph : DEFAULT_VEHICLE_PROFILE.averageMph,
         };
       }
     } catch (e) {
@@ -73,7 +74,13 @@ export const useCalculatorState = () => {
   };
 
   const updateField = (field: keyof CalculatorState, value: number | boolean) => {
-    if (field === 'gasPrice' || field === 'mpg' || field === 'maintenanceCpm' || field === 'targetHourlyWage') {
+    if (
+      field === 'gasPrice' ||
+      field === 'mpg' ||
+      field === 'maintenanceCpm' ||
+      field === 'targetHourlyWage' ||
+      field === 'averageMph'
+    ) {
       const numVal = typeof value === 'number' ? value : 0;
       setVehicleProfile((prev) => ({
         ...prev,

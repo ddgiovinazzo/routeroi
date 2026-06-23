@@ -110,6 +110,26 @@ export const MetricsForm = ({ state, updateField }: MetricsFormProps) => {
           <Suffix>/ hr</Suffix>
         </InputWrapper>
       </FormGroup>
+
+      <FormGroup>
+        <Label htmlFor="averageMph">Average Active Speed</Label>
+        <InputWrapper>
+          <StyledInput
+            id="averageMph"
+            type="number"
+            inputMode="numeric"
+            step="1"
+            min="1"
+            style={{ fontSize: '16px' }} // Expressly ensure 16px minimum to prevent iOS zoom
+            value={state.averageMph || ''}
+            onChange={(e) => handleChange('averageMph', e.target.value)}
+            $hasSuffix
+            $suffixLength={3}
+            required
+          />
+          <Suffix>MPH</Suffix>
+        </InputWrapper>
+      </FormGroup>
     </FormCard>
   );
 };
